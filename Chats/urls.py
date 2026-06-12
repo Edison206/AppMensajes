@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login, create_user, crearChat, obtenerChat, buscarMensaje, crearFavorito, bloquear, salirChat, consultarUsuariosGrupal, crearChatGrupal, actualizarNombreChat, eliminarChatGrupal, consultarUsuariosChat, eliminarParticipante, obtenerChatFavoritos, eliminarFavorito, buscarChatFavoritos, obtenerChatBloqueado, buscarChatBloqueados, desbloquearChat,  actualizarPerfilUsuario, logout, eliminarMensajes, reenviarMensaje, obtenerMensajes, enviarMensaje, obtenerInfoChat
+from .views import login, create_user, crearChat, obtenerChat, buscarMensaje, crearFavorito, bloquear, salirChat, consultarUsuariosGrupal, crearChatGrupal, actualizarNombreChat, eliminarChatGrupal, consultarUsuariosChat, eliminarParticipante, obtenerChatFavoritos, eliminarFavorito, buscarChatFavoritos, obtenerChatBloqueado, buscarChatBloqueados, desbloquearChat, obtenerUsuarios, actualizarPerfilUsuario, logout, eliminarMensajes, reenviarMensaje, obtenerMensajes, enviarMensaje, obtenerInfoChat
 
 urlpatterns = [
     path('login/', login),
@@ -23,6 +23,7 @@ urlpatterns = [
     path('obtenerChatBloqueado/', obtenerChatBloqueado),
     path('buscarChatBloqueados/', buscarChatBloqueados),
     path('desbloquearChat/', desbloquearChat),
+    path('obtenerUsuarios/', obtenerUsuarios),
     path('actualizarPerfilUsuario/', actualizarPerfilUsuario),
     path('logout/', logout),
 

@@ -359,7 +359,8 @@ def crearChatGrupal(request):
         chat_obj = chat.objects.create(
             name_chat=name_chat,
             block_chat=False,
-            admin=request.user
+            admin=request.user,
+            chat_grupal=True
         )
 
         #Crear un participante (Participante logueado)
@@ -383,11 +384,57 @@ def crearChatGrupal(request):
 
         return JsonResponse({
             'Mensaje': 'Chat creado correctamente',
+            'chat_id': chat_obj.id 
         })
 
     except Exception as e:
         return JsonResponse({'error': str(e)})
 
+
+
+#-----------------------------------------------Obtener todos los usuarios 
+@api_view(['GET'])
+def obtenerUsuarios(request):
+
+    try:
+
+        usuarios = User.objects.exclude(
+            id=request.user.id
+        )
+
+        data = []
+
+        for usuario in usuarios:
+
+            data.append({
+
+                "id": usuario.id,
+
+                "email": usuario.email,
+
+                "name_user": usuario.name_user,
+
+                "photo_user":
+
+                    request.build_absolute_uri(
+                        usuario.photo_user.url
+                    )
+
+                    if usuario.photo_user
+
+                    else None
+            })
+
+        return JsonResponse(
+            data,
+            safe=False
+        )
+
+    except Exception as e:
+
+        return JsonResponse({
+            "error": str(e)
+        })
 
 
 #-----------------------------------------------Cambiar el nombre del Chat
@@ -776,22 +823,36 @@ def enviarMensaje(request):
 #----------------------------Eliminar mensajes 
 @api_view(['POST'])
 def eliminarMensajes(request):
+
     try:
-        if request.method == 'POST':
-            id_mensaje = request.data.get("id")
 
-            # 🔥 eliminar mensajes
-            message.objects.get(id=id_mensaje).delete()
+        id_mensaje = request.data.get("id")
 
-            return JsonResponse({'Mensaje': 'Eliminado correctamente'})
+        mensaje = message.objects.get(id=id_mensaje)
 
-        return JsonResponse({'error': 'Método no permitido'})
+        mensaje.text_message = "Mensaje eliminado"
+
+        mensaje.image_message = None
+
+        mensaje.file_message = None
+
+        mensaje.save()
+
+        return JsonResponse({
+            'Mensaje': 'Eliminado correctamente'
+        })
 
     except message.DoesNotExist:
-        return JsonResponse({'error': 'Mensaje no existe'})
+
+        return JsonResponse({
+            'error': 'Mensaje no existe'
+        })
 
     except Exception as e:
-        return JsonResponse({'error': str(e)})
+
+        return JsonResponse({
+            'error': str(e)
+        })
 
 
 #------------------------------Reenviar mensaje 
