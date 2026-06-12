@@ -78,6 +78,7 @@ class messageSerializer(serializers.ModelSerializer):
             'image_message',
             'resend_message',
             'user'
+            'user name'
         ]
 
     def get_image_message(self, obj):
